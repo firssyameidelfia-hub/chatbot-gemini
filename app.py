@@ -22,14 +22,13 @@ def get_bot_response():
         return "Waduh, API Key Gemini belum dipasang di Vercel Settings."
         
     try:
-        # Menggunakan gemini-pro yang stabil di jalur v1beta
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key={api_key}"
+        # Jalur resmi Google API v1 yang mendukung gemini-1.5-flash tanpa embel-embel beta
+        url = f"https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key={api_key}"
         headers = {"Content-Type": "application/json"}
         
         payload = {
             "contents": [
                 {
-                    "role": "user",
                     "parts": [{"text": user_text}]
                 }
             ]
