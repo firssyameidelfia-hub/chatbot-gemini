@@ -22,7 +22,8 @@ def get_bot_response():
         return "Waduh, API Key Gemini belum dipasang di Vercel Settings."
         
     try:
-       url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key={api_key}"
+        # Menggunakan gemini-pro yang stabil di jalur v1beta
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key={api_key}"
         headers = {"Content-Type": "application/json"}
         
         payload = {
@@ -37,7 +38,6 @@ def get_bot_response():
         response = requests.post(url, json=payload, headers=headers)
         response_data = response.json()
         
-        # Pengaman: Kalau Google marah atau menolak, teks marahnya langsung tampil di chat biar kita tahu alasannya
         if 'error' in response_data:
             return f"Error dari Google: {response_data['error']['message']}"
             
