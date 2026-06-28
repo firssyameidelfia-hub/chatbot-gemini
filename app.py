@@ -5,9 +5,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Konfigurasi API Key menggunakan versi lama yang stabil (cocok dengan google-generativeai==0.8.3)
-genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
-
+# UBAH BARIS INI: Tambahkan api_version='v1' di dalamnya
+genai.configure(api_key=os.environ.get("GEMINI_API_KEY"), api_version='v1')
 app = Flask(__name__)
 
 @app.route("/")
