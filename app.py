@@ -1,12 +1,15 @@
 import os
 from flask import Flask, render_template, request
-import google.generativeai as genai
+from google import genai
 from dotenv import load_dotenv
 
 load_dotenv()
 
-# Konfigurasi API Key Gemini agar terbaca dengan benar di Vercel
-genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
+# Inisialisasi client Google GenAI dengan memaksa versi API 'v1' agar tidak lari ke v1beta
+client = genai.Client(
+    api_key=os.environ.get("GEMINI_API_KEY"),
+    http_options={'api_version': 'v1'}
+)
 
 app = Flask(__name__)
 
@@ -22,14 +25,14 @@ def get_bot_response():
         return "Maaf, pesan tidak boleh kosong."
         
     try:
-        # Menggunakan struktur pemanggilan Gemini versi stabil
-      model = genai.GenerativeModel('gemini-1.5-flash')
-        response = model.generate_content(user_text)
-        
-        # Pastikan dikembalikan dalam bentuk teks string murni untuk Flask
+        # Menggunakan struktur pemanggilan SDK terbaru yang stabil
+        response = client.models.generate_content(
+            model='gemini-1.5-flash',
+            contents=user_text
+        )
         return str(response.text)
     except Exception as e:
         return f"Waduh, ada kendala koneksi ke Gemini: {str(e)}"
 
 # Ini penting agar Vercel bisa mengenali aplikasimu saat di-deploy
-app = app
+app = apps
